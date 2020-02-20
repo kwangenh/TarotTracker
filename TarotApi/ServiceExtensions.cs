@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Contracts;
+using LoggingService;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -21,8 +23,7 @@ namespace TarotApi
                 options.AddPolicy("CorsPolicy",
                     builder => builder.AllowAnyOrigin()
                                         .AllowAnyMethod()
-                                        .AllowAnyHeader()
-                                        .WithMethods("POST", "GET", "PUT"));
+                                        .AllowAnyHeader());                                        
             });
         }
 
@@ -33,6 +34,11 @@ namespace TarotApi
             {
 
             });
+        }
+        
+        public static void ConfigureLoggerService(this IServiceCollection services)
+        {
+            services.AddSingleton<ILoggingManager, LoggingManager>();
         }
     }
 }

@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Contracts;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace TarotApi.Controllers
+{
+    [Route("[controller]")]
+    [ApiController]
+    public class ReadingsController : ControllerBase
+    {
+        private readonly ILoggingManager _logger;
+
+        public ReadingsController(ILoggingManager logger)
+        {
+            _logger = logger;
+        }
+
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            _logger.LogInfo("Here is info message from the controller.");
+            _logger.LogDebug("Here is debug message from the controller.");
+            _logger.LogWarning("Here is warn message from the controller.");
+            _logger.LogError("Here is error message from the controller.");
+
+            return new string[] { "value1", "value2" };
+        }
+    }
+}
