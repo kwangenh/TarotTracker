@@ -1,7 +1,10 @@
 ﻿using Contracts;
+using Entities;
 using LoggingService;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +42,12 @@ namespace TarotApi
         public static void ConfigureLoggerService(this IServiceCollection services)
         {
             services.AddSingleton<ILoggingManager, LoggingManager>();
+        }
+
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration config)
+        {
+            var connectionString = config["dbConnection:connectionString"];
+            services.AddDbContextPool<RepositoryContext>(x => x.UseSqlServer(connectionString));
         }
     }
 }
