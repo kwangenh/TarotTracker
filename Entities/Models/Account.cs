@@ -8,5 +8,7 @@ namespace Entities.Models
     {
         public Guid AccountId { get; set; }
         public string Name { get; set; }        
+        public string Email { get; set; }
+        // password will come later
     }
 }

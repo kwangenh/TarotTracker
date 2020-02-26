@@ -33,6 +33,7 @@ namespace TarotApi
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
+            services.ConfigureRepositoryWrapper();
 
             // built in
             services.AddControllers();  

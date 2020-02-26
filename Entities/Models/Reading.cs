@@ -12,5 +12,6 @@ namespace Entities.Models
         public Guid ReadingId { get; set; }
         public string ReadingType { get; set; }
         public DateTime ReadingDate { get; set; }
+        public List<ReadingCard> ReadingCards { get; set; }
     }
 }

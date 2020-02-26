@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts;
+using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,20 +13,32 @@ namespace TarotApi.Controllers
     [ApiController]
     public class ReadingsController : ControllerBase
     {
-        private readonly ILoggingManager _logger;
+        private IRepositoryWrapper _repoWrapper;
 
-        public ReadingsController(ILoggingManager logger)
+        public ReadingsController(IRepositoryWrapper repoWrapper)
         {
-            _logger = logger;
+            _repoWrapper = repoWrapper;
         }
 
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            _logger.LogInfo("Here is info message from the controller.");
+            /*
+             * _logger.LogInfo("Here is info message from the controller.");
             _logger.LogDebug("Here is debug message from the controller.");
             _logger.LogWarning("Here is warn message from the controller.");
             _logger.LogError("Here is error message from the controller.");
+            */
+
+            // test to create account
+            var newAccount = new Account();
+            newAccount.Name = "Kevin";
+
+            _repoWrapper.Account.Create(newAccount);
+            _repoWrapper.Save();
+
+            var thisAccount = _repoWrapper.Account.FindByCondition(x => x.AccountId.Equals(1));
+            var accounts = _repoWrapper.Account.FindAll();
 
             return new string[] { "value1", "value2" };
         }

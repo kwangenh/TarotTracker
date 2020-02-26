@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using LoggingService;
+using Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,8 +47,18 @@ namespace TarotApi
 
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration config)
         {
-            var connectionString = config["dbConnection:connectionString"];
-            services.AddDbContextPool<RepositoryContext>(x => x.UseSqlServer(connectionString));
+            /*
+             * var connectionString = config["dbConnection:connectionString"];
+            services.AddDbContextPool<RepositoryContext>(x => x.UseSqlServer(connectionString), x => x.MigrationsAssembly("TarotTracker.Entities"));
+            */
+
+            services.AddDbContext<RepositoryContext>(options =>
+            options.UseSqlServer(config.GetConnectionString("TarotDb")));
+        }
+
+        public static void ConfigureRepositoryWrapper(this IServiceCollection services)
+        {
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
     }
 }

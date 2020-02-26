@@ -12,5 +12,7 @@ namespace Entities.Models
         public Guid CardId { get; set; }
         [Required(ErrorMessage ="Name is Required")]
         public string CardName { get; set; }        
+        // ToDo: public Category CardType { get; set; }
+        // need to include cup, wand, pentacle, sword and major arcana perhaps as enum ?
     }
 }
