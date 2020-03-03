@@ -7,6 +7,7 @@ namespace Contracts
     public interface IRepositoryWrapper
     {
         IAccountRepository Account { get; }
+        ICardRepository Card { get; }
         void Save();
     }
 }

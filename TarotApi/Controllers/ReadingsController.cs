@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TarotApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ReadingsController : ControllerBase
     {
@@ -32,7 +32,8 @@ namespace TarotApi.Controllers
 
             // test to create account
             var newAccount = new Account();
-            newAccount.Name = "Kevin";
+            newAccount.Name = "BigBoy";
+            newAccount.Email = "myemail@test.com";
 
             _repoWrapper.Account.Create(newAccount);
             _repoWrapper.Save();
@@ -41,6 +42,12 @@ namespace TarotApi.Controllers
             var accounts = _repoWrapper.Account.FindAll();
 
             return new string[] { "value1", "value2" };
+        }
+
+        [HttpPost]
+        public void Post(Reading thisAccount)
+        {
+
         }
     }
 }

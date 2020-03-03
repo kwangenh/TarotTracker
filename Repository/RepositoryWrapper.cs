@@ -12,6 +12,7 @@ namespace Repository
     {
         private RepositoryContext _repositoryContext;
         private IAccountRepository _account;
+        private ICardRepository _card;
 
         public IAccountRepository Account
         { get
@@ -23,6 +24,18 @@ namespace Repository
                 return _account;
             }
 
+        }
+
+        public ICardRepository Card
+        {
+            get
+            {
+                if(_card == null)
+                {
+                    _card = new CardRepository(_repositoryContext);
+                }
+                return _card;
+            }
         }
 
         public RepositoryWrapper(RepositoryContext repositoryContext)

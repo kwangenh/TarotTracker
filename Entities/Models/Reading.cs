@@ -6,7 +6,7 @@ using System.Text;
 namespace Entities.Models
 {
 
-    [Table("Reading")]
+    // [Table("Reading")]
     public class Reading
     {
         public Guid ReadingId { get; set; }

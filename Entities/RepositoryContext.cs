@@ -12,8 +12,9 @@ namespace Entities
         {
         }
 
-        public DbSet<Card> Cards { get; set; }
-        public DbSet<Reading> Readings { get; set; }
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Card> Card { get; set; }
+        public DbSet<Reading> Reading { get; set; }
+        public DbSet<Account> Account { get; set; }
+        public DbSet<ReadingCard> ReadingCard { get; set; }
     }
 }
