@@ -100,6 +100,8 @@ namespace TarotApi.Controllers
                     return BadRequest("Invalid Reading DTO model");
                 }
 
+
+                // probably need to adjust ReadingForCreationDto so that it only takes a GUID for each card/card types
                 var readingEntity = _mapper.Map<Reading>(reading);
                 _repoWrapper.Reading.Create(readingEntity);
                 _repoWrapper.Save();
@@ -115,5 +117,24 @@ namespace TarotApi.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+
+        
+        /*
+         *{
+	        "ReadingType": 
+		        {
+			        "Id": 6063CFEF-EEE4-400E-DE69-08D7C2D5FEC2,
+			        "Name": "Just a Test for all cards",
+			        "CardCount": 78
+		        },
+	        "ReadingCards": [
+		        {"CardId": "", "CardName": "", "Arcana": "", "Suit":"", "MinorNumber":"", "MajorNumber":""},
+		        {"CardId": "", "CardName": "", "Arcana": "", "Suit":"", "MinorNumber":"", "MajorNumber":""},
+		        {"CardId": "", "CardName": "", "Arcana": "", "Suit":"", "MinorNumber":"", "MajorNumber":""}
+		    ]
+	        }*/
     }
 }
+
+ 
