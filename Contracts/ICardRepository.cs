@@ -7,5 +7,7 @@ namespace Contracts
 {
     public interface ICardRepository : IRepositoryBase<Card>
     {
+        IEnumerable<Card> GetAllCards();
+        Card GetCardById(Guid id);
     }
 }

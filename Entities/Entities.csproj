@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Enumerations\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Migrations\" />
     <Folder Include="Model Extension\" />
   </ItemGroup>
 

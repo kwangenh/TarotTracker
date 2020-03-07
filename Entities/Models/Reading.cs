@@ -4,14 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Entities.Models
-{
-
-    // [Table("Reading")]
+{    
     public class Reading
     {
-        public Guid ReadingId { get; set; }
-        public string ReadingType { get; set; }
+        public Guid ReadingId { get; set; }        
         public DateTime ReadingDate { get; set; }
         public List<ReadingCard> ReadingCards { get; set; }
+        public ReadingType ReadingType { get; set; }
     }
 }

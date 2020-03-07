@@ -13,6 +13,7 @@ namespace Repository
         private RepositoryContext _repositoryContext;
         private IAccountRepository _account;
         private ICardRepository _card;
+        public IReadingTypeRepository _readingType;
 
         public IAccountRepository Account
         { get
@@ -35,6 +36,18 @@ namespace Repository
                     _card = new CardRepository(_repositoryContext);
                 }
                 return _card;
+            }
+        }
+
+        public IReadingTypeRepository ReadingType
+        {
+            get
+            {
+                if(_readingType == null)
+                {
+                    _readingType = new ReadingTypeRepository(_repositoryContext);
+                }
+                return _readingType;
             }
         }
 

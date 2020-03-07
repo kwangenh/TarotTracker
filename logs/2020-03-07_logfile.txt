@@ -1,0 +1,13 @@
+2020-03-07 11:14:34.1334 INFO Returned all cards from database
+2020-03-07 11:14:39.7717 INFO Returned all cards from database
+2020-03-07 11:18:27.6601 INFO Returned card with id e6e25c76-0c19-49b0-1520-08d7c2ba0cdc
+2020-03-07 12:01:23.8018 ERROR Something went wrong in the CreateReadingType action: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+ReadingTypeForCreationDto -> ReadingType
+Entities.DataTransferObjects.ReadingTypeForCreationDto -> Entities.Models.ReadingType
+2020-03-07 12:01:40.7119 ERROR Something went wrong in the CreateReadingType action: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+ReadingTypeForCreationDto -> ReadingType
+Entities.DataTransferObjects.ReadingTypeForCreationDto -> Entities.Models.ReadingType

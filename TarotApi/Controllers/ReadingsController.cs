@@ -2,34 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Contracts;
+using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TarotApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ReadingsController : ControllerBase
     {
         private IRepositoryWrapper _repoWrapper;
+        private ILoggingManager _loggingManager;
+        private IMapper _mapper;
 
-        public ReadingsController(IRepositoryWrapper repoWrapper)
+        public ReadingsController(IRepositoryWrapper repoWrapper, ILoggingManager loggingManager, IMapper mapper)
         {
             _repoWrapper = repoWrapper;
+            _loggingManager = loggingManager;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            /*
-             * _logger.LogInfo("Here is info message from the controller.");
-            _logger.LogDebug("Here is debug message from the controller.");
-            _logger.LogWarning("Here is warn message from the controller.");
-            _logger.LogError("Here is error message from the controller.");
-            */
-
             // test to create account
             var newAccount = new Account();
             newAccount.Name = "BigBoy";
@@ -45,9 +44,35 @@ namespace TarotApi.Controllers
         }
 
         [HttpPost]
-        public void Post(Reading thisAccount)
+        public IActionResult CreateReadingType([FromBody]ReadingTypeForCreationDto readingTypeToCreateDto)
         {
+            try
+            {
+                if(readingTypeToCreateDto == null)
+                {
+                    _loggingManager.LogError("Reading Type object is null");
+                    return BadRequest("Reading Type Object is Null");
+                }
+                if (!ModelState.IsValid)
+                {
+                    _loggingManager.LogError("Reading Type object is invalid");
+                    return BadRequest("Reading Type object is not valid");
+                }
 
+                var readingEntity = _mapper.Map<ReadingType>(readingTypeToCreateDto);
+
+                _repoWrapper.ReadingType.Create(readingEntity);
+                _repoWrapper.Save();
+
+                var createdReadingType = _mapper.Map<Reading>(readingEntity);
+
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                _loggingManager.LogError($"Something went wrong in the CreateReadingType action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
         }
     }
 }

@@ -6,6 +6,19 @@ using System.Text;
 
 namespace Entities.Models
 {
+    public class Card
+    {
+        public Guid CardId { get; set; }
+        [Required(ErrorMessage = "Name is Required")]
+        public string CardName { get; set; }
+        [Required(ErrorMessage = "Must Provide Arcanum Type")]
+        public Arcana Arcana { get; set; }
+        public Suit? Suit { get; set; }
+        public MinorNumber? MinorNumber { get; set; }
+        public MajorNumber? MajorNumber { get; set; }
+        public MajorName? MajorName { get; set; }
+    }
+
     public enum Arcana
     {
         Major,
@@ -76,7 +89,7 @@ namespace Entities.Models
         TheChariot,
         Strength,
         TheHermit,
-        TheWheelOfFortune,
+        WheelOfFortune,
         Justice,
         TheHangedMan,
         Death,
@@ -86,23 +99,7 @@ namespace Entities.Models
         TheStar,
         TheMoon, 
         TheSun,
-        Judgment,
+        Judgement,
         TheWorld
-    }
-
-    
-    public class Card
-    {
-        public Guid CardId { get; set; }
-        [Required(ErrorMessage ="Name is Required")]
-        public string CardName { get; set; }
-        [Required(ErrorMessage ="Must Provide Arcanum Type")]
-        public Arcana Arcana { get; set; }
-    #nullable enable
-        public Suit? Suit { get; set; }    
-        public MinorNumber? MinorNumber { get; set; }
-        public MajorNumber? MajorNumber { get; set; }
-        public MajorName? MajorName { get; set; }
-    #nullable disable        
     }
 }
