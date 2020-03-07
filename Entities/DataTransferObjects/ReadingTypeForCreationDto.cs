@@ -6,7 +6,7 @@ namespace Entities.DataTransferObjects
 {
     public class ReadingTypeForCreationDto
     {
-        [Index(IsUnique = true)]
+        //[Index(IsUnique = true)]
         public string Name { get; set; }
         public int CardCount { get; set; }
     }
