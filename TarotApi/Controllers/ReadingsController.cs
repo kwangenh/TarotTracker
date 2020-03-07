@@ -44,11 +44,11 @@ namespace TarotApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateReadingType([FromBody]ReadingTypeForCreationDto readingTypeToCreateDto)
+        public IActionResult CreateReadingType([FromBody]ReadingTypeForCreationDto readingType)
         {
             try
             {
-                if(readingTypeToCreateDto == null)
+                if(readingType == null)
                 {
                     _loggingManager.LogError("Reading Type object is null");
                     return BadRequest("Reading Type Object is Null");
@@ -59,14 +59,14 @@ namespace TarotApi.Controllers
                     return BadRequest("Reading Type object is not valid");
                 }
 
-                var readingEntity = _mapper.Map<ReadingType>(readingTypeToCreateDto);
+                var readingEntity = _mapper.Map<ReadingType>(readingType);
 
                 _repoWrapper.ReadingType.Create(readingEntity);
                 _repoWrapper.Save();
 
-                var createdReadingType = _mapper.Map<Reading>(readingEntity);
+                var createdReadingType = _mapper.Map<ReadingTypeForCreationDto>(readingEntity);
 
-                return Ok();
+                return Ok(createdReadingType);
             }
             catch(Exception ex)
             {
