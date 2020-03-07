@@ -62,6 +62,12 @@ namespace TarotApi.Controllers
                  *  return BadRequest("Reading Type name already exists");
                  */
 
+                if (_repoWrapper.ReadingType.GetReadingTypesByName(readingType.Name).Any())
+                {
+                    _loggingManager.LogError("That name already exists");
+                    return BadRequest("That reading type name already exists");
+                }
+
                 if (!ModelState.IsValid)
                 {
                     _loggingManager.LogError("Reading Type object is invalid");
@@ -99,7 +105,6 @@ namespace TarotApi.Controllers
                     _loggingManager.LogError("Invalid Reading DTO model");
                     return BadRequest("Invalid Reading DTO model");
                 }
-
 
                 // probably need to adjust ReadingForCreationDto so that it only takes a GUID for each card/card types
                 var readingEntity = _mapper.Map<Reading>(reading);

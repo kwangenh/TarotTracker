@@ -7,7 +7,7 @@ namespace Contracts
 {
     public interface IReadingTypeRepository : IRepositoryBase<ReadingType>
     {
-        ReadingType GetReadingTypeByName(string name);
+        IEnumerable<ReadingType> GetReadingTypesByName(string name);
         ReadingType GetReadingTypeById(Guid id);
         IEnumerable<ReadingType> GetAllReadingTypes();
     }

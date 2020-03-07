@@ -11,7 +11,7 @@ namespace Repository
     {
         public ReadingRepository(RepositoryContext repoContext) : base(repoContext)
         {
-
+            
         }
     }
 }

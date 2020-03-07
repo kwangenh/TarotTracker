@@ -15,9 +15,9 @@ namespace Repository
 
         }
 
-        public ReadingType GetReadingTypeByName(string name)
+        public IEnumerable<ReadingType> GetReadingTypesByName(string name)
         {
-            return FindByCondition(readingType => readingType.Name.Equals(name)).FirstOrDefault();
+            return FindByCondition(readingType => readingType.Name.Equals(name));
         }
 
         public ReadingType GetReadingTypeById(Guid id)
