@@ -14,7 +14,9 @@ namespace TarotApi
         {
             CreateMap<Card, CardDto>();
             CreateMap<ReadingType, ReadingTypeForCreationDto>();
-            CreateMap<ReadingType, ReadingTypeForCreationDto>().ReverseMap();              
+            CreateMap<ReadingType, ReadingTypeForCreationDto>().ReverseMap();
+            CreateMap<Reading, ReadingForCreationDto>();
+            CreateMap<Reading, ReadingForCreationDto>().ReverseMap();
         }
     }
 }

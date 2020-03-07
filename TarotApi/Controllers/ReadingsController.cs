@@ -53,6 +53,15 @@ namespace TarotApi.Controllers
                     _loggingManager.LogError("Reading Type object is null");
                     return BadRequest("Reading Type Object is Null");
                 }
+
+                // does not catch duplicate uqniue string - need to add logic to handle that somewhere else
+                /* 
+                 * if(NameExists)
+                 * {
+                 *  _loggingManager.LogError("Reading Type name already exists");
+                 *  return BadRequest("Reading Type name already exists");
+                 */
+
                 if (!ModelState.IsValid)
                 {
                     _loggingManager.LogError("Reading Type object is invalid");
@@ -71,6 +80,38 @@ namespace TarotApi.Controllers
             catch(Exception ex)
             {
                 _loggingManager.LogError($"Something went wrong in the CreateReadingType action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        public IActionResult CreateReading([FromBody]ReadingForCreationDto reading)
+        {
+            try
+            {
+                if (reading == null)
+                {
+                    _loggingManager.LogError("Reading DTO is null");
+                    return BadRequest("Reading DTO is null");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    _loggingManager.LogError("Invalid Reading DTO model");
+                    return BadRequest("Invalid Reading DTO model");
+                }
+
+                var readingEntity = _mapper.Map<Reading>(reading);
+                _repoWrapper.Reading.Create(readingEntity);
+                _repoWrapper.Save();
+
+                var createdReadingDto = _mapper.Map<ReadingForCreationDto>(readingEntity);
+
+                return Ok(createdReadingDto);
+            }
+            
+            catch(Exception ex)
+            {
+                _loggingManager.LogError($"Something went wrong in the CreateReading action : {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }

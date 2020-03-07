@@ -74,7 +74,6 @@ namespace TarotApi.Controllers
                 _loggingManager.LogError($"Something went wrong in the GetAllCards action : {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
-            
         }
         
         [HttpGet("{id}")]

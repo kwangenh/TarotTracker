@@ -9,6 +9,7 @@ namespace Contracts
         IAccountRepository Account { get; }
         ICardRepository Card { get; }
         IReadingTypeRepository ReadingType { get; }
+        IReadingRepository Reading { get; }
         void Save();
     }
 }

@@ -14,6 +14,7 @@ namespace Repository
         private IAccountRepository _account;
         private ICardRepository _card;
         public IReadingTypeRepository _readingType;
+        public IReadingRepository _reading;
 
         public IAccountRepository Account
         { get
@@ -48,6 +49,18 @@ namespace Repository
                     _readingType = new ReadingTypeRepository(_repositoryContext);
                 }
                 return _readingType;
+            }
+        }
+
+        public IReadingRepository Reading
+        {
+            get
+            {
+                if(_reading == null)
+                {
+                    _reading = new ReadingRepository(_repositoryContext);
+                }
+                return _reading;
             }
         }
 
