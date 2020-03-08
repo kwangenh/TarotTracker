@@ -43,9 +43,32 @@ namespace TarotApi.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        [HttpPost]
-        public IActionResult CreateReadingType([FromBody]ReadingTypeForCreationDto readingType)
+        [HttpGet]
+        public IActionResult GetAllReadingTypes()
         {
+            try
+            {
+                var readingTypes = _repoWrapper.ReadingType.GetAllReadingTypes();
+                if(readingTypes == null)
+                {
+                    _loggingManager.LogError("There was an error retrieving ReadingType.FindAll() : null value");
+                    return BadRequest("There was an error retrieving Reading Types");
+                }
+
+                var readingTypeDtos = _mapper.Map<IEnumerable<ReadingType_Read_Dto>>(readingTypes);
+                return Ok(readingTypeDtos);
+            }
+            catch(Exception ex)
+            {
+                _loggingManager.LogError($"There was an error in the GetAllReadingTypes action : {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CreateReadingType([FromBody]ReadingType_Create_Dto readingType)
+        {
+            // should these try calls be factored into Business Level Layer ?
             try
             {
                 if(readingType == null)
@@ -54,21 +77,14 @@ namespace TarotApi.Controllers
                     return BadRequest("Reading Type Object is Null");
                 }
 
-                // does not catch duplicate uqniue string - need to add logic to handle that somewhere else
-                /* 
-                 * if(NameExists)
-                 * {
-                 *  _loggingManager.LogError("Reading Type name already exists");
-                 *  return BadRequest("Reading Type name already exists");
-                 */
-
-                if (_repoWrapper.ReadingType.GetReadingTypesByName(readingType.Name).Any())
+                // if name already exists, then throw error for duplicate name
+                if(_repoWrapper.ReadingType.GetReadingTypesByName(readingType.Name).Any())
                 {
                     _loggingManager.LogError("That name already exists");
                     return BadRequest("That reading type name already exists");
                 }
 
-                if (!ModelState.IsValid)
+                if(!ModelState.IsValid)
                 {
                     _loggingManager.LogError("Reading Type object is invalid");
                     return BadRequest("Reading Type object is not valid");
@@ -79,7 +95,7 @@ namespace TarotApi.Controllers
                 _repoWrapper.ReadingType.Create(readingEntity);
                 _repoWrapper.Save();
 
-                var createdReadingType = _mapper.Map<ReadingTypeForCreationDto>(readingEntity);
+                var createdReadingType = _mapper.Map<ReadingType_Create_Dto>(readingEntity);
 
                 return Ok(createdReadingType);
             }
@@ -90,7 +106,7 @@ namespace TarotApi.Controllers
             }
         }
 
-        public IActionResult CreateReading([FromBody]ReadingForCreationDto reading)
+        public IActionResult CreateReading([FromBody]Reading_Create_Dto reading)
         {
             try
             {
@@ -106,12 +122,43 @@ namespace TarotApi.Controllers
                     return BadRequest("Invalid Reading DTO model");
                 }
 
+                if(reading.ReadingType.CardCount > reading.ReadingCards.Count)
+                {
+                    _loggingManager.LogError($"More cards than this type of reading requires: {reading.ReadingType.CardCount} cards required but {reading.ReadingCards.Count} added.");
+                    return BadRequest($"More cards than this type of reading requires: {reading.ReadingType.CardCount} cards required but {reading.ReadingCards.Count} added.");
+                }
+
+                if (reading.ReadingType.CardCount < reading.ReadingCards.Count)
+                {
+                    _loggingManager.LogError($"Less cards than this type of reading requires: {reading.ReadingType.CardCount} cards required but {reading.ReadingCards.Count} added.");
+                    return BadRequest($"Less cards than this type of reading requires: {reading.ReadingType.CardCount} cards required but {reading.ReadingCards.Count} added.");
+                }
+
+                // pretty sure for this to work, the ReadingCard.ReadCard object [Card] (should be Card_Read_Dto or something other than actual Entity obj) will need to be populated
+                foreach(var readingCard in reading.ReadingCards)
+                {
+                    if (_repoWrapper.Card.GetCardById(readingCard.CardId) == null)
+                    {
+                        _loggingManager.LogError("Invalid card ID provided for reading card in CreateReading action.");
+                        return BadRequest("Invalid Card ID provided for Reading Card.");
+                    }
+                }
+
+                if(_repoWrapper.ReadingType.GetReadingTypeById(reading.ReadingType.Id) == null)
+                {
+                    _loggingManager.LogError("Invalid ReadingType object provided in CreateReading action.");
+                    return BadRequest("Invalid Reading Type provided.");
+                }
+
+                // create Reading.ReadingCards (?) unsure if those should be part of the model instead of having to be created here
+                // if going to be part of model, will need first method to call GetAllCards then another to build the ReadingCard_Create_Dto objs to send to client
+
                 // probably need to adjust ReadingForCreationDto so that it only takes a GUID for each card/card types
                 var readingEntity = _mapper.Map<Reading>(reading);
                 _repoWrapper.Reading.Create(readingEntity);
                 _repoWrapper.Save();
 
-                var createdReadingDto = _mapper.Map<ReadingForCreationDto>(readingEntity);
+                var createdReadingDto = _mapper.Map<Reading_Create_Dto>(readingEntity);
 
                 return Ok(createdReadingDto);
             }
@@ -124,7 +171,7 @@ namespace TarotApi.Controllers
         }
 
 
-        
+
         /*
          *{
 	        "ReadingType": 
@@ -139,6 +186,21 @@ namespace TarotApi.Controllers
 		        {"CardId": "", "CardName": "", "Arcana": "", "Suit":"", "MinorNumber":"", "MajorNumber":""}
 		    ]
 	        }*/
+
+        // pass cards to front end for "create reading" view
+        // pass reading type to front end for "create reading" view
+        // select card objects as part of "create reading" action
+        // post ReadingToCreateDto object containing List of Cards and the Reading Type
+        // validate the Reading object is not null
+        // validate Reading ModelState is legit
+        // validate number of ReadingCards matches number of cards in the ReadingType.CardCount value
+        // validate Cards are legit by Guid
+        // validate the Reading Type is legit by Guid
+        // map the ReadingToCreateDto to the Reading Entity
+        // create the Reading object using repo
+        // map the ReadingCardDtos to ReadingCard Entities
+        // create the ReadingCards
+
     }
 }
 

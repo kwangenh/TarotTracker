@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Entities.DataTransferObjects
 {
-    public class CardDto
+    public class Card_Read_Dto
     {
         public Guid CardId { get; set; }
-        [Required(ErrorMessage = "Name is Required")]
+        //[Required(ErrorMessage = "Name is Required")]
         public string CardName { get; set; }
-        [Required(ErrorMessage = "Must Provide Arcanum Type")]
+        //[Required(ErrorMessage = "Must Provide Arcanum Type")]
         public Arcana Arcana { get; set; }
         public Suit? Suit { get; set; }
         public MinorNumber? MinorNumber { get; set; }

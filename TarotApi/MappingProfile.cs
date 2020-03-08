@@ -12,11 +12,14 @@ namespace TarotApi
     {
         public MappingProfile()
         {
-            CreateMap<Card, CardDto>();
-            CreateMap<ReadingType, ReadingTypeForCreationDto>();
-            CreateMap<ReadingType, ReadingTypeForCreationDto>().ReverseMap();
-            CreateMap<Reading, ReadingForCreationDto>();
-            CreateMap<Reading, ReadingForCreationDto>().ReverseMap();
+            CreateMap<Card, Card_Read_Dto>();
+            CreateMap<ReadingType, ReadingType_Create_Dto>();
+            CreateMap<ReadingType, ReadingType_Create_Dto>().ReverseMap();
+            CreateMap<Reading, Reading_Create_Dto>();
+            CreateMap<Reading, Reading_Create_Dto>().ReverseMap();
+            // CreateMap<Reading_Read_Dto, Reading>(); unsure if needed yet
+            CreateMap<ReadingType, ReadingType_Read_Dto>();
+            CreateMap<ReadingType, ReadingType_Read_Dto>().ReverseMap();
         }
     }
 }

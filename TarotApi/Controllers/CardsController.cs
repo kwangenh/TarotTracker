@@ -66,7 +66,7 @@ namespace TarotApi.Controllers
                 var cards = _repoWrapper.Card.GetAllCards();                
                 _loggingManager.LogInfo($"Returned all cards from database");
 
-                var cardDtos = _mapper.Map<IEnumerable<CardDto>>(cards);
+                var cardDtos = _mapper.Map<IEnumerable<Card_Read_Dto>>(cards);
                 return Ok(cardDtos);
             }
             catch(Exception ex)
